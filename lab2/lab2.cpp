@@ -75,8 +75,8 @@ int ex1() {
     // кол-во шагов по прямой
     int i, j;
     bool direction = 0;
-    // 0 нечет - вверх и влево
-    // 1 чет - вниз и вправо
+    // 0 нечет - вверх и влево   вверх и вправо
+    // 1 чет - вниз и вправо     вниз и влево
     i = j = SIZE / 2;
     // центр 
     int index = 0;
@@ -98,7 +98,7 @@ int ex1() {
                 index++;
             }
             for (int k = 0; k < count; k++) {
-                j++;
+                j--;
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
@@ -114,7 +114,7 @@ int ex1() {
                 index++;
             }
             for (int k = 0; k < count; k++) {
-                j--;
+                j++;
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
@@ -127,7 +127,7 @@ int ex1() {
     //last 1 prohod
     count = SIZE - 1;
     for (int k = 0; k < count; k++) {
-        i++;
+        i--;
         massive[index] = matrix[i][j];
         cout << setw(4) << massive[index];
         index++;
