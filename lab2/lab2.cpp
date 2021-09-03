@@ -6,6 +6,7 @@
 using namespace std;
 
 #define SIZE 6
+void print(int* Arr);
 //ex1
 void random(int** temp) {
     for (int i = 0; i < SIZE; i++) {
@@ -17,7 +18,7 @@ void random(int** temp) {
 
 }
 
-void print(int** temp) {
+void print1(int** temp) {
     cout << "\n";
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -38,7 +39,7 @@ int ex1() {
 
     cout << "matrix:";
     random(matrix);
-    print(matrix);
+    print1(matrix);
 
     int* massive = new int[SIZE * SIZE];
 
@@ -217,7 +218,62 @@ int ex1() {
     return 0;
 }
 //
+//ex2 
 
+int* genRandArray(int size, int maxValue) {
+    int* arr = new int[size + 1];
+    if (!arr) {
+        cout << "Error mem";
+        return nullptr;
+    }
+    arr[0] = size;
+    for (int i = 1; i <= size; i++) {
+        arr[i] = rand() % maxValue;
+    }
+    return arr;
+}
+
+void print(int* Arr) {
+    //cout << Arr[0] << ": ";
+    for (int i = 0; i < Arr[0]; i++) {
+        cout << Arr[i] << " ";
+    }
+    cout << "\n";
+}
+
+int** genRandMatrix(int size, int maxValue) {
+    int** matr = new int* [size];
+    if (!matr) {
+        cout << "Error mem";
+        return nullptr;
+    }
+    for (int i = 0; i < size; i++) {
+        matr[i] = genRandArray(rand() % 10 + 1, maxValue);
+
+    }
+    return matr;
+}
+
+void printMatrix(int** matrix, int size) {
+
+    for (int i = 0; i < size; i++) {
+        print(matrix[i]);
+        //cout << "\n";
+    }
+}
+
+int ex2() {
+    int size = rand() % 10;
+    int maxValue = 100;
+    int** matrix = genRandMatrix(size, maxValue);
+    cout << "Amount of lines in matrix = " << size << "\n";
+    printMatrix(matrix, size);
+    for (int i = 0; i < size; i++) {
+        delete[] matrix[i];
+    }
+    return 0;
+}
+//
 
 int main() {
     srand(time(NULL));
@@ -232,7 +288,7 @@ int main() {
             break;
         }
         case 2: {
-            //ex2();
+            ex2();
             break;
         }
         case 3: {

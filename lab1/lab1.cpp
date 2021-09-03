@@ -50,7 +50,7 @@ int** genRandMatrix(int size, int maxValue) {
 }
 
 void printMatrix(int** matrix, int size) {
-    int i = 0;
+    //int i = 0;
     for(int i = 0; i < size; i++) {
         print(matrix[i]);
         cout << "\n";
