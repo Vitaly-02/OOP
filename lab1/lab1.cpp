@@ -73,7 +73,7 @@ int ex2() {
 int main() {
     srand(time(NULL));
     while(1) {
-        cout << "To choose excersize enter 1 2 3 or 4 to exit\nYour choose: ";
+        cout << "To choose excersize enter 1 2 or 3 to exit\nYour choose: ";
         int ex = 0;
         cin >> ex;
         switch (ex) {
