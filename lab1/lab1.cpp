@@ -18,7 +18,6 @@ int* genRandArray(int size, int maxValue) {
 }
 
 void print(int* Arr) {
-    //if (Arr == nullptr) { return; }
     cout << Arr[0] << ": ";
     for (int i = 1; i <= Arr[0]; i++) {
         cout << Arr[i] << " ";
@@ -73,31 +72,27 @@ int ex2() {
 
 int main() {
     srand(time(NULL));
-    while(1){
-    cout << "To choose excersize enter 1 2 3 or 4 to exit\nYour choose: ";
-    int ex = 0;
-    cin >> ex;
-    switch (ex) {
-        case 1: {
-            ex1();
-            break;
-        }
-        case 2: {
-            ex2();
-            break;
-        }
-        case 3: {
-        
-            break;
-        }
-        case 4: {
-            return 0;
-            break;
-        }
-        default: {
-            break;
-        }
-    }
+    while(1) {
+        cout << "To choose excersize enter 1 2 3 or 4 to exit\nYour choose: ";
+        int ex = 0;
+        cin >> ex;
+        switch (ex) {
+           case 1: {
+                ex1();
+               break;
+            }
+           case 2: {
+               ex2();
+              break;
+           }
+           case 3: {
+               return 0;
+                break;
+           }
+          default: {
+              break;
+          }
+        }   
     }
     return 0;
 }
