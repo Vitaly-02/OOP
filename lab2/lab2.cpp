@@ -5,20 +5,39 @@
 
 using namespace std;
 
-#define SIZE 6
+#define SIZE 5
+
 void print(int* Arr);
+void printMatrix(int** matrix, int size);
+//int* genRandArray(int size, int maxValue);
+//int** genRandMatrix(int size, int maxValue);
+
 //ex1
-void random(int** temp) {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            temp[i][j] = rand() % 255;
-        }
-
+int* genRandArrayEx1(int size, int maxValue) {
+    int* arr = new int[size + 1];
+    if (!arr) {
+        cout << "Error mem";
+        return nullptr;
     }
-
+    for (int i = 0; i < size; i++) {
+        arr[i] = rand() % maxValue;
+    }
+    return arr;
 }
 
-void print1(int** temp) {
+int** genRandMatrixEx1(int size, int maxValue) {     //vmesto random()
+    int** matr = new int* [size];
+    if (!matr) {
+        cout << "Error mem";
+        return nullptr;
+    }
+    for (int i = 0; i < size; i++) {
+        matr[i] = genRandArrayEx1(size, maxValue);
+    }
+    return matr;
+ }
+
+void printEx1(int** temp) {
     cout << "\n";
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -32,14 +51,9 @@ void print1(int** temp) {
 int ex1() {
     srand(time(NULL));
     // initialization
-    int** matrix = new int* [SIZE];
-    for (int i = 0; i < SIZE; i++) {
-        matrix[i] = new int[SIZE];
-    }
-
+    int** matrix = genRandMatrixEx1(SIZE, 300);
     cout << "matrix:";
-    random(matrix);
-    print1(matrix);
+    printEx1(matrix);
 
     int* massive = new int[SIZE * SIZE];
 
