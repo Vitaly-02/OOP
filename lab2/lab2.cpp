@@ -9,8 +9,6 @@ using namespace std;
 
 void print(int* Arr);
 void printMatrix(int** matrix, int size);
-//int* genRandArray(int size, int maxValue);
-//int** genRandMatrix(int size, int maxValue);
 
 //ex1
 int* genRandArrayEx1(int size, int maxValue) {
@@ -48,16 +46,9 @@ void printEx1(int** temp) {
     cout << "\n";
 }
 
-void turnChecker(int& count, int& turn) {
-    //if (turn == 2) {
-    //    count++;
-    //}
-    
-    
-    if ((turn % 2 != 0) && (turn > 2)) {
-        
-        count--;  // EBAL V ROT
-        
+void turnChecker(int& count, int& turn) {   
+    if ((turn % 2 != 0) && (turn > 2)) { 
+        count--;  
     }
 }
 
@@ -83,26 +74,20 @@ int ex1() {
         cout << setw(4) << massive[i];
     }
     cout << "\nc) по спирали, начиная с центрального элемента\n";
-    // good
     int count = 1;
     // кол-во шагов по прямой
     int i, j;
     bool direction = 0;
-    // 0 нечет - вверх и влево   вверх и вправо
-    // 1 чет - вниз и вправо     вниз и влево
+    // 0 - вверх и вправо
+    // 1 - вниз и влево
     i = j = SIZE / 2;
     // центр 
     int index = 0;
-    // index of massive
+    // индекс массива
     massive[index] = matrix[i][j];
     cout << setw(4) << massive[index];
     index++;
     while (count < SIZE) {
-
-        //if(count % SIZE == 0 && count != 0) {
-        //    cout << "\n";
-        //}
-
         if (direction) {
             for (int k = 0; k < count; k++) {
                 i++;
@@ -115,9 +100,7 @@ int ex1() {
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
-
             }
-
         }
         else {
             for (int k = 0; k < count; k++) {
@@ -132,12 +115,11 @@ int ex1() {
                 cout << setw(4) << massive[index];
                 index++;
             }
-
         }
         count++;
         direction = !direction;
     }
-    //last 1 prohod
+    // последний проход
     count = SIZE - 1;
     for (int k = 0; k < count; k++) {
         i--;
@@ -145,21 +127,7 @@ int ex1() {
         cout << setw(4) << massive[index];
         index++;
     }
-    /*for(int k = 0; k < count; k++) {
-                j++;
-                massive[index] = matrix[i][j];
-                cout << setw(4) << massive[index];
-                index++;
-    }
-    for(int k = 0; k < count; k++) {
-                i--;
-                massive[index] = matrix[i][j];
-                cout << setw(4) << massive[index];
-                index++;
-    }
-    */
     cout << "\nd) по спирали, начиная с левого верхнего элемента\n";
-    // good
     //int count = 1;
     // кол-во шагов по прямой
     //int i, j;
@@ -170,42 +138,12 @@ int ex1() {
     i = j = 0;
     // первый эл 
     index = 0;
-    // index of massive
+    // индекс массива
     massive[index] = matrix[i][j];
     cout << setw(4) << massive[index];
     index++;
-    /*
-    //first 3 prohoda
-    count = SIZE - 1;
-    for (int k = 0; k < count; k++) {
-        i++;
-        massive[index] = matrix[i][j];
-        cout << setw(4) << massive[index];
-        index++;
-    }
-    for (int k = 0; k < count; k++) {
-        j++;
-        massive[index] = matrix[i][j];
-        cout << setw(4) << massive[index];
-        index++;
-    }
-    for (int k = 0; k < count; k++) {
-        i--;
-        massive[index] = matrix[i][j];
-        cout << setw(4) << massive[index];
-        index++;
-    }
-    count--;  */
     int turn = 0;
-    // если кратна 3 то шаг уменьшается
     while (count > 0) {
-
-        //if(count % SIZE == 0 && count != 0) {
-        //    cout << "\n";
-        //}
-        
-        
-
         if (direction) {
             for (int k = 0; k < count; k++) {
                 j--;
@@ -220,7 +158,6 @@ int ex1() {
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
-
             }
             turn++;
             turnChecker(count, turn);
@@ -243,13 +180,10 @@ int ex1() {
             turn++;
             turnChecker(count, turn);
         }
-        //count--;
         direction = !direction;
         
     }
-
-
-    // delete mem
+    // освобождение памяти
     for (int i = 0; i < SIZE; i++) {
         delete[] matrix[i];
     }
@@ -272,7 +206,6 @@ int* genRandArray(int size, int maxValue) {
 }
 
 void print(int* Arr) {
-    //cout << Arr[0] << ": ";
     for (int i = 0; i < Arr[0]; i++) {
         cout << Arr[i] << " ";
     }
@@ -287,7 +220,6 @@ int** genRandMatrix(int size, int maxValue) {
     }
     for (int i = 0; i < size; i++) {
         matr[i] = genRandArray(rand() % 10 + 1, maxValue);
-
     }
     return matr;
 }
@@ -296,7 +228,6 @@ void printMatrix(int** matrix, int size) {
 
     for (int i = 0; i < size; i++) {
         print(matrix[i]);
-        //cout << "\n";
     }
 }
 
