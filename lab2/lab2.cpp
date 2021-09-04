@@ -48,6 +48,19 @@ void printEx1(int** temp) {
     cout << "\n";
 }
 
+void turnChecker(int& count, int& turn) {
+    //if (turn == 2) {
+    //    count++;
+    //}
+    
+    
+    if ((turn % 2 != 0) && (turn > 2)) {
+        
+        count--;  // EBAL V ROT
+        
+    }
+}
+
 int ex1() {
     srand(time(NULL));
     // initialization
@@ -151,9 +164,9 @@ int ex1() {
     // кол-во шагов по прямой
     //int i, j;
     //bool direction = 1; 
-    // 0 нечет - вправо и вверх
-    // 1 чет - влево и вниз
-    direction = 1;
+    // 0 нечет - вправо и вверх    вправо и вниз
+    // 1 чет - влево и вниз        влево и вверх
+    direction = 0;
     i = j = 0;
     // первый эл 
     index = 0;
@@ -161,7 +174,7 @@ int ex1() {
     massive[index] = matrix[i][j];
     cout << setw(4) << massive[index];
     index++;
-
+    /*
     //first 3 prohoda
     count = SIZE - 1;
     for (int k = 0; k < count; k++) {
@@ -182,12 +195,16 @@ int ex1() {
         cout << setw(4) << massive[index];
         index++;
     }
-    count--;
+    count--;  */
+    int turn = 0;
+    // если кратна 3 то шаг уменьшается
     while (count > 0) {
 
         //if(count % SIZE == 0 && count != 0) {
         //    cout << "\n";
         //}
+        
+        
 
         if (direction) {
             for (int k = 0; k < count; k++) {
@@ -196,14 +213,17 @@ int ex1() {
                 cout << setw(4) << massive[index];
                 index++;
             }
+            turn++;
+            turnChecker(count, turn);
             for (int k = 0; k < count; k++) {
-                i++;
+                i--;
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
 
             }
-
+            turn++;
+            turnChecker(count, turn);
         }
         else {
             for (int k = 0; k < count; k++) {
@@ -212,16 +232,20 @@ int ex1() {
                 cout << setw(4) << massive[index];
                 index++;
             }
+            turn++;
+            turnChecker(count, turn);
             for (int k = 0; k < count; k++) {
-                i--;
+                i++;
                 massive[index] = matrix[i][j];
                 cout << setw(4) << massive[index];
                 index++;
             }
-
+            turn++;
+            turnChecker(count, turn);
         }
-        count--;
+        //count--;
         direction = !direction;
+        
     }
 
 
