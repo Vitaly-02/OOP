@@ -101,10 +101,35 @@ int ex1() {
     //}
     cout << "\nb) по левым диагоналям, начиная с левого верхнего элемента\n";
     // ???
+    i = 0; j = 0; k = 0; ind = 0;
+    for (k = 0; k < SIZE; k++) {
+        for (i = 0; i <= k; i++) {
+            j = k - i;
+            massive[ind] = matrix[i][j];
+            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
+            ind++;
+        }
+    }
+    for (k = SIZE - 2; k >= 0; k--) {
+        for (i = SIZE - k - 1; i < SIZE; i++) {
+            j = SIZE - i;
+            massive[ind] = matrix[i][j];
+            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
+            ind++;
+        }
+    }
+
+    for (int i = 0; i < SIZE * SIZE; i++) {
+        cout << setw(4) << massive[i];
+    }
+
+
+
+    /*
     for (int i = 0; i < SIZE; i++) {
         massive[i] = matrix[i][i];
         cout << setw(4) << massive[i];
-    }
+    }*/
     cout << "\nc) по спирали, начиная с центрального элемента\n";
     int count = 1;
     // кол-во шагов по прямой
