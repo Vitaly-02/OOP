@@ -62,14 +62,13 @@ int ex1() {
     int* massive = new int[SIZE * SIZE];
 
     cout << "a) по правым диагоналям, начиная с правого верхнего элемента\n";
-    // ???
+    
     int i, j, k, ind;
     i = 0; j = SIZE - 1; k = 0; ind = 0;
     for (k = 0; k < SIZE; k++) {
         for (i = 0; i <= k; i++) {
             j = SIZE - 1 - k + i;
             massive[ind] = matrix[i][j];
-            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
             ind++;
         }
     }
@@ -77,7 +76,6 @@ int ex1() {
         for (j = 0; j <= k; j++) {
             i = SIZE - 1 - k + j;
             massive[ind] = matrix[i][j];
-            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
             ind++;
         }
     }
@@ -86,27 +84,13 @@ int ex1() {
         cout << setw(4) << massive[i];
     }
 
-    /*
-    int j1 = SIZE - 1;
-    for (int i = 0; i < SIZE; i++, j1--) {
-        for (int jj = j1; jj >= 0; jj--) {
-            massive[i] = matrix[i][jj];
-            cout << setw(4) << massive[i];
-        }
-    }
-    */
-    //for (int i = 0; i < SIZE; i++) {
-    //    massive[i] = matrix[i][SIZE - 1 - i];
-    //    cout << setw(4) << massive[i];
-    //}
     cout << "\nb) по левым диагоналям, начиная с левого верхнего элемента\n";
-    // ???
+    
     i = 0; j = 0; k = 0; ind = 0;
     for (k = 0; k < SIZE; k++) {
         for (i = 0; i <= k; i++) {
             j = k - i;
             massive[ind] = matrix[i][j];
-            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
             ind++;
         }
     }
@@ -114,7 +98,6 @@ int ex1() {
         for (j = SIZE - 1; j > k; j--) {
             i = SIZE - j + k;
             massive[ind] = matrix[i][j];
-            //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
             ind++;
         }
     }
@@ -123,13 +106,6 @@ int ex1() {
         cout << setw(4) << massive[i];
     }
 
-
-
-    /*
-    for (int i = 0; i < SIZE; i++) {
-        massive[i] = matrix[i][i];
-        cout << setw(4) << massive[i];
-    }*/
     cout << "\nc) по спирали, начиная с центрального элемента\n";
     int count = 1;
     // кол-во шагов по прямой
