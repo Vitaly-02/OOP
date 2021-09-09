@@ -110,9 +110,9 @@ int ex1() {
             ind++;
         }
     }
-    for (k = SIZE - 2; k >= 0; k--) {
-        for (i = SIZE - k - 1; i < SIZE; i++) {
-            j = SIZE - i;
+    for (k = 0; k < SIZE - 1; k++) {
+        for (j = SIZE - 1; j > k; j--) {
+            i = SIZE - j + k;
             massive[ind] = matrix[i][j];
             //massive[SIZE * SIZE - ind - 1] = matrix[j][i];
             ind++;
