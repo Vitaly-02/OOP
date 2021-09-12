@@ -29,7 +29,7 @@ public:
     void drawPoint(RenderWindow* window) {
         CircleShape shape1(3);
         shape1.setPosition(x, y);
-        shape1.setFillColor(sf::Color(color[0], color[1], color[2]));
+        shape1.setFillColor(Color(color[0], color[1], color[2]));
         window->draw(shape1);
     }
 
@@ -42,37 +42,89 @@ public:
         }
         x += xSpeed;
         y += ySpeed;
+    }
 
+    void randomMove() {
+        if (x >= width - xSpeed || x <= -xSpeed) {
+            xSpeed = -xSpeed;
+        }
+        if (y >= height - ySpeed || y <= -ySpeed) {
+            ySpeed = -ySpeed;
+        }
+        x += xSpeed;
+        y += ySpeed;
+        int s;
+        s = rand() % 50; 
+        // чем меньше, тем чаще меняется направление
+        // и почему-то все скапливаются в углу
+        switch (s) {
+        case 0: {
+            xSpeed = rand() % 10;
+            ySpeed = rand() % 10;
+            break;
+        }
+        case 1: {
+            xSpeed = rand() % 10;
+            break;
+        }
+        case 2: {
+            ySpeed = rand() % 10;
+            break;
+        }
+        case 3: {
+            xSpeed = -xSpeed;
+            break;
+        }
+        case 4: {
+            ySpeed = -ySpeed;
+            break;
+        }
+        case 5: {
+            xSpeed = -xSpeed;
+            ySpeed = -ySpeed;
+            break;
+        }
+        default: {
+            break;
+        }
+        }
     }
 };
 
-
-
 int main() {
     srand(time(0));
-    sf::RenderWindow window(sf::VideoMode(width, height), "jopa");
-    //sf::CircleShape shape1(3);
-    //shape1.setPosition(100, 100);
-    //shape1.setFillColor(sf::Color(255, 10, 10));
+    RenderWindow window(VideoMode(width, height), "okno");
     Point one;
-    //one.drawPoint(&window);
     one.getRandAll();
 
+    Point sto[100];
+    for (int i = 0; i < 100; i++) {
+        sto[i].getRandAll();
+    }
+
+    bool mode = 1;
 
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
         }
         window.clear();
-        one.forwardMove();
-        one.drawPoint(&window);
+        if (Keyboard::isKeyPressed(Keyboard::Left)) {
+            mode = !mode;
+        }
+        for (int i = 0; i < 100; i++) {
+            if (mode == 1) {
+                sto[i].forwardMove();
+            }
+            else {
+                sto[i].randomMove();
+            }
+            sto[i].drawPoint(&window);
+        }
         sleep(seconds(0.05));
         window.display();
     }
-
-
-    //sleep(seconds(5));
     return 0;
 }
