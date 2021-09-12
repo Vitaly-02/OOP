@@ -9,13 +9,22 @@ int height = 400;
 
 class Point {
 private:
-    float x = 0;
-    float y = 0;
-    int xSpeed = 1;
-    int ySpeed = 1;
-    int color[3] = {0, 0, 0};
+    float x;
+    float y;
+    int xSpeed;
+    int ySpeed;
+    int color[3];
 
 public:
+    //конструктор по умолчанию
+    Point() {
+        x = 0;
+        y = 0;
+        xSpeed = 1;
+        ySpeed = 1;
+        color[0] = color[1] = color[2] = 0;
+    };
+
     void getRandAll() {
         x = rand() % width;
         y = rand() % height;
