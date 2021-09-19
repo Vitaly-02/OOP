@@ -4,8 +4,8 @@
 
 using namespace sf;
 
-int width = 400;
-int height = 400;
+int width = 600;
+int height = 600;
 
 class Point {
 private:
@@ -14,6 +14,7 @@ private:
     int xSpeed;
     int ySpeed;
     int color[3];
+    int radius;
 
 public:
     //конструктор по умолчанию
@@ -23,6 +24,7 @@ public:
         xSpeed = 1;
         ySpeed = 1;
         color[0] = color[1] = color[2] = 0;
+        radius = 3;
     };
 
     void getRandAll() {
@@ -36,17 +38,17 @@ public:
     }
 
     void drawPoint(RenderWindow* window) {
-        CircleShape shape1(3);
+        CircleShape shape1(radius);
         shape1.setPosition(x, y);
         shape1.setFillColor(Color(color[0], color[1], color[2]));
         window->draw(shape1);
     }
 
     void forwardMove() {
-        if (x >= width - xSpeed || x <= - xSpeed) {
+        if (x >= width - xSpeed - radius || x <= - xSpeed) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed || y <= - ySpeed) {
+        if (y >= height - ySpeed - radius || y <= - ySpeed) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
@@ -100,18 +102,74 @@ public:
     }
 };
 
+class Circle : public Point {
+private:
+    float x;
+    float y;
+    int xSpeed;
+    int ySpeed;
+    int color[3];
+    int radius;
+
+public:
+       
+    void getRandAll() {
+        radius = rand() % 30 + 5;
+        while ((x <= radius * 2) || (x >= width - radius * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= radius * 2) || (y >= height - radius * 2)) {
+            y = rand() % height;
+        }
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        
+    }
+    void drawCircle(RenderWindow* window) {
+        
+        CircleShape shape(radius);
+        shape.setPosition(x, y);
+        shape.setOutlineThickness(3);
+        shape.setOutlineColor(Color(color[0], color[1], color[2]));
+        shape.setFillColor(Color(0, 0, 0, 0));
+        // последний 0 == прозрачность
+        window->draw(shape);
+    }
+    void forwardMove() {
+        if (x >= width - xSpeed - radius*2 || x <= -xSpeed) {
+            xSpeed = -xSpeed;
+        }
+        if (y >= height - ySpeed - radius*2 || y <= -ySpeed) {
+            ySpeed = -ySpeed;
+        }
+        x += xSpeed;
+        y += ySpeed;
+    }
+};
+
+class Line {
+private:
+    float xy[4];
+
+};
+
 int main() {
     srand(time(0));
     RenderWindow window(VideoMode(width, height), "okno");
-    Point one;
-    one.getRandAll();
+    //Point one;
+    //one.getRandAll();
 
-    Point sto[100];
-    for (int i = 0; i < 100; i++) {
+    Circle sto[10];
+    for (int i = 0; i < 10; i++) {
+        //sto[i];
         sto[i].getRandAll();
+        
     }
 
-    bool mode = 1;
+    //bool mode = 1;
 
     while (window.isOpen()) {
         Event event;
@@ -120,17 +178,17 @@ int main() {
                 window.close();
         }
         window.clear();
-        if (Keyboard::isKeyPressed(Keyboard::Left)) {
-            mode = !mode;
-        }
-        for (int i = 0; i < 100; i++) {
-            if (mode == 1) {
+        //if (Keyboard::isKeyPressed(Keyboard::Left)) {
+        //    mode = !mode;
+        //}
+        for (int i = 0; i < 10; i++) {
+            //if (mode == 1) {
                 sto[i].forwardMove();
-            }
-            else {
-                sto[i].randomMove();
-            }
-            sto[i].drawPoint(&window);
+            //}
+            //else {
+            //    sto[i].randomMove();
+            //}
+            sto[i].drawCircle(&window);
         }
         sleep(seconds(0.05));
         window.display();
