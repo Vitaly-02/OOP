@@ -8,7 +8,7 @@ int width = 600;
 int height = 600;
 
 class Point {
-private:
+protected:
     float x;
     float y;
     int xSpeed;
@@ -43,12 +43,22 @@ public:
         shape1.setFillColor(Color(color[0], color[1], color[2]));
         window->draw(shape1);
     }
-
+    /* старое движение для точек
     void forwardMove() {
-        if (x >= width - xSpeed - radius || x <= - xSpeed) {
+        if (x >= width - xSpeed - radius || x <= -xSpeed) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - radius || y <= - ySpeed) {
+        if (y >= height - ySpeed - radius || y <= -ySpeed) {
+            ySpeed = -ySpeed;
+        }
+        x += xSpeed;
+        y += ySpeed;
+    }*/
+    void forwardMove() {
+        if (x >= width - xSpeed - radius * 2 || x <= -xSpeed) {
+            xSpeed = -xSpeed;
+        }
+        if (y >= height - ySpeed - radius * 2 || y <= -ySpeed) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
@@ -65,7 +75,7 @@ public:
         x += xSpeed;
         y += ySpeed;
         int s;
-        s = rand() % 50; 
+        s = rand() % 50;
         // чем меньше, тем чаще меняется направление
         // и почему-то все скапливаются в углу
         switch (s) {
@@ -103,16 +113,16 @@ public:
 };
 
 class Circle : public Point {
-private:
+/*private:
     float x;
     float y;
     int xSpeed;
     int ySpeed;
     int color[3];
     int radius;
-
+*/
 public:
-       
+    
     void getRandAll() {
         radius = rand() % 30 + 5;
         while ((x <= radius * 2) || (x >= width - radius * 2)) {
@@ -126,10 +136,10 @@ public:
         }
         xSpeed = rand() % 3 + 1;
         ySpeed = rand() % 3 + 1;
-        
+
     }
     void drawCircle(RenderWindow* window) {
-        
+
         CircleShape shape(radius);
         shape.setPosition(x, y);
         shape.setOutlineThickness(3);
@@ -137,22 +147,33 @@ public:
         shape.setFillColor(Color(0, 0, 0, 0));
         // последний 0 == прозрачность
         window->draw(shape);
-    }
+    }/*
     void forwardMove() {
-        if (x >= width - xSpeed - radius*2 || x <= -xSpeed) {
+        if (x >= width - xSpeed - radius * 2 || x <= -xSpeed) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - radius*2 || y <= -ySpeed) {
+        if (y >= height - ySpeed - radius * 2 || y <= -ySpeed) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
         y += ySpeed;
-    }
+    }*/
 };
 
-class Line {
+class Triangle : public Circle {
 private:
-    float xy[4];
+    int angles = 3;
+public:
+    void drawCircle(RenderWindow* window) {
+
+        CircleShape shape(radius, angles);
+        shape.setPosition(x, y);
+        shape.setOutlineThickness(3);
+        shape.setOutlineColor(Color(color[0], color[1], color[2]));
+        shape.setFillColor(Color(0, 0, 0, 0));
+        // последний 0 == прозрачность
+        window->draw(shape);
+    }
 
 };
 
@@ -162,11 +183,11 @@ int main() {
     //Point one;
     //one.getRandAll();
 
-    Circle sto[10];
+    Triangle sto[10];
     for (int i = 0; i < 10; i++) {
         //sto[i];
         sto[i].getRandAll();
-        
+
     }
 
     //bool mode = 1;
@@ -183,7 +204,7 @@ int main() {
         //}
         for (int i = 0; i < 10; i++) {
             //if (mode == 1) {
-                sto[i].forwardMove();
+            sto[i].forwardMove();
             //}
             //else {
             //    sto[i].randomMove();
