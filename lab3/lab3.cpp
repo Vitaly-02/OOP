@@ -7,7 +7,7 @@ using namespace sf;
 int width = 600;
 int height = 600;
 
-class Point {
+class Polygon {
 protected:
     float x;
     float y;
@@ -15,45 +15,28 @@ protected:
     int ySpeed;
     int color[3];
     int radius;
+    int angles;
 
 public:
     //конструктор по умолчанию
-    Point() {
+    Polygon() {
         x = 0;
         y = 0;
         xSpeed = 1;
         ySpeed = 1;
         color[0] = color[1] = color[2] = 0;
         radius = 3;
+        angles = 30;
     };
-
-    void getRandAll() {
-        x = rand() % width;
-        y = rand() % height;
-        for (int i = 0; i < 3; i++) {
-            color[i] = rand() % 255;
-        }
-        xSpeed = rand() % 10;
-        ySpeed = rand() % 10;
+    void drawPolygon(RenderWindow* window) {
+        CircleShape polygon(radius, angles);
+        polygon.setPosition(x, y);
+        polygon.setOutlineThickness(3);
+        polygon.setOutlineColor(Color(color[0], color[1], color[2]));
+        polygon.setFillColor(Color(0, 0, 0, 0));
+        // последний 0 == прозрачность
+        window->draw(polygon);
     }
-
-    void drawPoint(RenderWindow* window) {
-        CircleShape shape1(radius);
-        shape1.setPosition(x, y);
-        shape1.setFillColor(Color(color[0], color[1], color[2]));
-        window->draw(shape1);
-    }
-    /* старое движение для точек
-    void forwardMove() {
-        if (x >= width - xSpeed - radius || x <= -xSpeed) {
-            xSpeed = -xSpeed;
-        }
-        if (y >= height - ySpeed - radius || y <= -ySpeed) {
-            ySpeed = -ySpeed;
-        }
-        x += xSpeed;
-        y += ySpeed;
-    }*/
     void forwardMove() {
         if (x >= width - xSpeed - radius * 2 || x <= -xSpeed) {
             xSpeed = -xSpeed;
@@ -64,7 +47,6 @@ public:
         x += xSpeed;
         y += ySpeed;
     }
-
     void randomMove() {
         if (x >= width - xSpeed || x <= -xSpeed) {
             xSpeed = -xSpeed;
@@ -110,20 +92,13 @@ public:
         }
         }
     }
+    
 };
 
-class Circle : public Point {
-/*private:
-    float x;
-    float y;
-    int xSpeed;
-    int ySpeed;
-    int color[3];
-    int radius;
-*/
+class Triangle : public Polygon {
 public:
-    
-    void getRandAll() {
+    //конструктор по умолчанию
+    Triangle() {
         radius = rand() % 30 + 5;
         while ((x <= radius * 2) || (x >= width - radius * 2)) {
             x = rand() % width;
@@ -131,49 +106,185 @@ public:
         while ((y <= radius * 2) || (y >= height - radius * 2)) {
             y = rand() % height;
         }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
         for (int i = 0; i < 3; i++) {
             color[i] = rand() % 255;
         }
+        angles = 3;
+    };
+};
+
+class Circle : public Polygon {
+public:
+    //конструктор по умолчанию
+    Circle() {
+        radius = rand() % 30 + 5;
+        while ((x <= radius * 2) || (x >= width - radius * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= radius * 2) || (y >= height - radius * 2)) {
+            y = rand() % height;
+        }
         xSpeed = rand() % 3 + 1;
         ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 30;
+    };
+};
 
+class Point : public Circle {
+public:
+    //конструктор по умолчанию
+    Point() {
+        radius = 3;
+        while ((x <= radius * 2) || (x >= width - radius * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= radius * 2) || (y >= height - radius * 2)) {
+            y = rand() % height;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 30;
+    };
+    void drawPolygon(RenderWindow* window) {
+        CircleShape polygon(radius, angles);
+        polygon.setPosition(x, y);
+        polygon.setFillColor(Color(color[0], color[1], color[2]));
+        window->draw(polygon);
     }
-    void drawCircle(RenderWindow* window) {
+};
+// ромб
+class Rhombus : public Polygon {
+public:
+    //конструктор по умолчанию
+    Rhombus() {
+        radius = rand() % 30 + 5;
+        while ((x <= radius * 2) || (x >= width - radius * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= radius * 2) || (y >= height - radius * 2)) {
+            y = rand() % height;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 4;
+    };
 
-        CircleShape shape(radius);
-        shape.setPosition(x, y);
-        shape.setOutlineThickness(3);
-        shape.setOutlineColor(Color(color[0], color[1], color[2]));
-        shape.setFillColor(Color(0, 0, 0, 0));
+};
+// прямоугольник
+class Rectangle : public Polygon {
+protected:
+    int ox;
+    int oy;
+public:
+    //конструктор по умолчанию
+    Rectangle() {
+        ox = rand() % 30 + 5;
+        oy = rand() % 30 + 5;
+        while ((x <= ox * 2) || (x >= width - ox * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= oy * 2) || (y >= height - oy * 2)) {
+            y = rand() % height;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 4;
+    };
+    void drawPolygon(RenderWindow* window) {
+        RectangleShape polygon(Vector2f(ox, oy));
+        polygon.setPosition(x, y);
+        polygon.setOutlineThickness(3);
+        polygon.setOutlineColor(Color(color[0], color[1], color[2]));
+        polygon.setFillColor(Color(0, 0, 0, 0));
         // последний 0 == прозрачность
-        window->draw(shape);
-    }/*
+        window->draw(polygon);
+    }
     void forwardMove() {
-        if (x >= width - xSpeed - radius * 2 || x <= -xSpeed) {
+        if (x >= width - xSpeed - ox || x <= -xSpeed) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - radius * 2 || y <= -ySpeed) {
+        if (y >= height - ySpeed - oy || y <= -ySpeed) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
         y += ySpeed;
-    }*/
+    }
 };
 
-class Triangle : public Circle {
-private:
-    int angles = 3;
+class Line : public Rectangle {
 public:
-    void drawCircle(RenderWindow* window) {
-
-        CircleShape shape(radius, angles);
-        shape.setPosition(x, y);
-        shape.setOutlineThickness(3);
-        shape.setOutlineColor(Color(color[0], color[1], color[2]));
-        shape.setFillColor(Color(0, 0, 0, 0));
-        // последний 0 == прозрачность
-        window->draw(shape);
+    //конструктор по умолчанию
+    Line() {
+        ox = rand() % 30 + 5;
+        oy = 3;
+        while ((x <= ox * 2) || (x >= width - ox * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= oy * 2) || (y >= height - oy * 2)) {
+            y = rand() % height;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 4;
+    };
+    void drawPolygon(RenderWindow* window) {
+        RectangleShape polygon(Vector2f(ox, oy));
+        polygon.setPosition(x, y);
+        polygon.setFillColor(Color(color[0], color[1], color[2]));
+        window->draw(polygon);
     }
+};
+
+class EllipseShape : public sf::Shape {
+public:
+    explicit EllipseShape(const sf::Vector2f& radius = sf::Vector2f(0, 0)) :
+        m_radius(radius) {
+        update();
+    }
+    void setRadius(const sf::Vector2f& radius) {
+        m_radius = radius;
+        update();
+    }
+    const sf::Vector2f& getRadius() const {
+        return m_radius;
+    }
+    virtual unsigned int getPointCount() const {
+        return 30; // здесь фиксировано, но может быть атрибутом класса, если это необходимо
+    }
+
+    virtual sf::Vector2f getPoint(unsigned int index) const {
+        static const float pi = 3.141592654f;
+
+        float angle = index * 2 * pi / getPointCount() - pi / 2;
+        float x = std::cos(angle) * m_radius.x;
+        float y = std::sin(angle) * m_radius.y;
+
+        return sf::Vector2f(m_radius.x + x, m_radius.y + y);
+    }
+
+private:
+    sf::Vector2f m_radius;
+};
+
+class Ellipse : public Circle {
+
 
 };
 
@@ -183,12 +294,8 @@ int main() {
     //Point one;
     //one.getRandAll();
 
-    Triangle sto[10];
-    for (int i = 0; i < 10; i++) {
-        //sto[i];
-        sto[i].getRandAll();
-
-    }
+    Line sto[10];
+    
 
     //bool mode = 1;
 
@@ -209,7 +316,7 @@ int main() {
             //else {
             //    sto[i].randomMove();
             //}
-            sto[i].drawCircle(&window);
+            sto[i].drawPolygon(&window);
         }
         sleep(seconds(0.05));
         window.display();
