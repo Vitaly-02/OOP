@@ -252,40 +252,36 @@ public:
     }
 };
 
-class EllipseShape : public sf::Shape {
+class Ellipse : public Rectangle {
 public:
-    explicit EllipseShape(const sf::Vector2f& radius = sf::Vector2f(0, 0)) :
-        m_radius(radius) {
-        update();
+    //конструктор по умолчанию
+    Ellipse() {
+        radius = rand() % 30 + 5;
+        ox = 4 * radius;
+        oy = 2 * radius;
+        while ((x <= ox * 2) || (x >= width - ox * 2)) {
+            x = rand() % width;
+        }
+        while ((y <= oy * 2) || (y >= height - oy * 2)) {
+            y = rand() % height;
+        }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 30;
+    };
+    void drawPolygon(RenderWindow* window) {
+        CircleShape polygon(radius, angles);
+        polygon.setPosition(x, y);
+        polygon.setOutlineThickness(3);
+        polygon.setOutlineColor(Color(color[0], color[1], color[2]));
+        polygon.setFillColor(Color(0, 0, 0, 0));
+        // последний 0 == прозрачность
+        polygon.setScale(2, 1);
+        window->draw(polygon);
     }
-    void setRadius(const sf::Vector2f& radius) {
-        m_radius = radius;
-        update();
-    }
-    const sf::Vector2f& getRadius() const {
-        return m_radius;
-    }
-    virtual unsigned int getPointCount() const {
-        return 30; // здесь фиксировано, но может быть атрибутом класса, если это необходимо
-    }
-
-    virtual sf::Vector2f getPoint(unsigned int index) const {
-        static const float pi = 3.141592654f;
-
-        float angle = index * 2 * pi / getPointCount() - pi / 2;
-        float x = std::cos(angle) * m_radius.x;
-        float y = std::sin(angle) * m_radius.y;
-
-        return sf::Vector2f(m_radius.x + x, m_radius.y + y);
-    }
-
-private:
-    sf::Vector2f m_radius;
-};
-
-class Ellipse : public Circle {
-
-
 };
 
 int main() {
@@ -294,7 +290,7 @@ int main() {
     //Point one;
     //one.getRandAll();
 
-    Line sto[10];
+    Ellipse sto[10];
     
 
     //bool mode = 1;
