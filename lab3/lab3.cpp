@@ -16,6 +16,7 @@ protected:
     int color[3];
     int radius;
     int angles;
+    int rotate;
 
 public:
     //конструктор по умолчанию
@@ -27,10 +28,24 @@ public:
         color[0] = color[1] = color[2] = 0;
         radius = 3;
         angles = 30;
+        rotate = 0;
     };
+    //конструктор с несколькими параметрами
+    Polygon(int a, int b, int c, int d) {
+        x = a;
+        y = b;
+        xSpeed = c;
+        ySpeed = d;
+        color[0] = color[1] = color[2] = 0;
+        radius = 3;
+        angles = 30;
+        rotate = 0;
+    }
     void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
+        polygon.setOrigin(radius, radius);
+        polygon.rotate(rotate);
         polygon.setOutlineThickness(3);
         polygon.setOutlineColor(Color(color[0], color[1], color[2]));
         polygon.setFillColor(Color(0, 0, 0, 0));
@@ -38,10 +53,11 @@ public:
         window->draw(polygon);
     }
     void forwardMove() {
-        if (x >= width - xSpeed - radius * 2 || x <= -xSpeed) {
+        rotate = 0;
+        if (x >= width - xSpeed - radius || x <= -xSpeed + radius) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - radius * 2 || y <= -ySpeed) {
+        if (y >= height - ySpeed - radius || y <= -ySpeed + radius) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
@@ -93,6 +109,18 @@ public:
         }
     }
     
+    void rotateMove(RenderWindow* window) {
+        //CircleShape polygon(radius, angles);
+        //polygon.setPosition(x, y);
+        //polygon.setOutlineThickness(3);
+        //polygon.setOutlineColor(Color(color[0], color[1], color[2]));
+        //polygon.setFillColor(Color(0, 0, 0, 0));
+        // последний 0 == прозрачность
+        //polygon.setOrigin(radius, radius);
+        //polygon.rotate(i);
+        rotate++;
+        //window->draw(polygon);
+    }
 };
 
 class Triangle : public Polygon {
@@ -112,6 +140,7 @@ public:
             color[i] = rand() % 255;
         }
         angles = 3;
+        rotate = 0;
     };
 };
 
@@ -132,6 +161,7 @@ public:
             color[i] = rand() % 255;
         }
         angles = 30;
+        rotate = 0;
     };
 };
 
@@ -152,6 +182,7 @@ public:
             color[i] = rand() % 255;
         }
         angles = 30;
+        rotate = 0;
     };
     void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
@@ -178,6 +209,7 @@ public:
             color[i] = rand() % 255;
         }
         angles = 4;
+        rotate = 0;
     };
 
 };
@@ -203,10 +235,13 @@ public:
             color[i] = rand() % 255;
         }
         angles = 4;
+        rotate = 0;
     };
     void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
+        polygon.setOrigin(ox / 2, oy / 2);
+        polygon.rotate(rotate);
         polygon.setOutlineThickness(3);
         polygon.setOutlineColor(Color(color[0], color[1], color[2]));
         polygon.setFillColor(Color(0, 0, 0, 0));
@@ -214,15 +249,17 @@ public:
         window->draw(polygon);
     }
     void forwardMove() {
-        if (x >= width - xSpeed - ox || x <= -xSpeed) {
+        rotate = 0;
+        if (x >= width - xSpeed - ox/2 || x <= -xSpeed + ox/2) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - oy || y <= -ySpeed) {
+        if (y >= height - ySpeed - oy/2 || y <= -ySpeed + oy/2) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
         y += ySpeed;
     }
+
 };
 
 class Line : public Rectangle {
@@ -243,11 +280,14 @@ public:
             color[i] = rand() % 255;
         }
         angles = 4;
+        rotate = 0;
     };
     void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
+        polygon.setOrigin(ox / 2, oy / 2);
         polygon.setFillColor(Color(color[0], color[1], color[2]));
+        polygon.rotate(rotate);
         window->draw(polygon);
     }
 };
@@ -271,10 +311,13 @@ public:
             color[i] = rand() % 255;
         }
         angles = 30;
+        rotate = 0;
     };
     void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
+        polygon.setOrigin(radius, radius);
+        polygon.rotate(rotate);
         polygon.setOutlineThickness(3);
         polygon.setOutlineColor(Color(color[0], color[1], color[2]));
         polygon.setFillColor(Color(0, 0, 0, 0));
@@ -287,31 +330,30 @@ public:
 int main() {
     srand(time(0));
     RenderWindow window(VideoMode(width, height), "okno");
-    //Point one;
-    //one.getRandAll();
 
-    Ellipse sto[10];
+    Point sto[10]; 
+    bool mode = 1;
     
-
-    //bool mode = 1;
-
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
+            if (event.type == Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Enter) {
+                    mode = !mode;
+                }
+            }
         }
         window.clear();
-        //if (Keyboard::isKeyPressed(Keyboard::Left)) {
-        //    mode = !mode;
-        //}
         for (int i = 0; i < 10; i++) {
-            //if (mode == 1) {
+            if (mode == 1) {
             sto[i].forwardMove();
-            //}
-            //else {
-            //    sto[i].randomMove();
-            //}
+            sto[i].drawPolygon(&window);
+            }
+            else {
+                sto[i].rotateMove(&window);
+            }
             sto[i].drawPolygon(&window);
         }
         sleep(seconds(0.05));
