@@ -25,23 +25,26 @@ public:
         y = 0;
         xSpeed = 1;
         ySpeed = 1;
-        color[0] = color[1] = color[2] = 0;
+        color[0] = color[1] = color[2] = 110;
         radius = 3;
         angles = 30;
         rotate = 0;
     };
     //конструктор с несколькими параметрами
-    Polygon(int a, int b, int c, int d) {
+    Polygon(float a, float b, int c=1, int d=1, int arr[]=0, int e=3, int f=30, int g=0) {
         x = a;
         y = b;
         xSpeed = c;
         ySpeed = d;
-        color[0] = color[1] = color[2] = 0;
-        radius = 3;
-        angles = 30;
-        rotate = 0;
+        color[0] = arr[0];
+        color[1] = arr[1];
+        color[2] = arr[2];
+        radius = e;
+        angles = f;
+        rotate = g; 
     }
-    /*virtual*/ void drawPolygon(RenderWindow* window) {
+    
+    virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setOrigin(radius, radius);
@@ -51,8 +54,8 @@ public:
         polygon.setFillColor(Color(0, 0, 0, 0));
         // последний 0 == прозрачность
         window->draw(polygon);
-    }
-    /*virtual*/ void forwardMove() {
+    } 
+    virtual void forwardMove() {
         rotate = 0;
         if (x >= width - xSpeed - radius || x <= -xSpeed + radius) {
             xSpeed = -xSpeed;
@@ -175,7 +178,7 @@ public:
         angles = 30;
         rotate = 0;
     };
-    /*virtual*/ void drawPolygon(RenderWindow* window) {
+    virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setFillColor(Color(color[0], color[1], color[2]));
@@ -228,7 +231,7 @@ public:
         angles = 4;
         rotate = 0;
     };
-    /*virtual*/ void drawPolygon(RenderWindow* window) {
+    virtual void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
         polygon.setOrigin(ox / 2, oy / 2);
@@ -239,7 +242,7 @@ public:
         // последний 0 == прозрачность
         window->draw(polygon);
     }
-    /*virtual*/ void forwardMove() {
+    virtual void forwardMove() {
         rotate = 0;
         if (x >= width - xSpeed - ox/2 || x <= -xSpeed + ox/2) {
             xSpeed = -xSpeed;
@@ -273,7 +276,7 @@ public:
         angles = 4;
         rotate = 0;
     };
-    /*virtual*/ void drawPolygon(RenderWindow* window) {
+    virtual void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
         polygon.setOrigin(ox / 2, oy / 2);
@@ -304,7 +307,7 @@ public:
         angles = 30;
         rotate = 0;
     };
-    /*virtual*/ void drawPolygon(RenderWindow* window) {
+    virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setOrigin(radius, radius);
@@ -321,13 +324,17 @@ public:
 int main() {
     srand(time(0));
     RenderWindow window(VideoMode(width, height), "okno");
-
-    Point sto[10]; 
+ 
     bool mode = 1;
     
-    //Polygon arr[2];
-    //arr[0] = Circle();
-    //arr[1] = Rectangle();
+    Polygon* arr[7];
+    arr[0] = new Triangle();
+    arr[1] = new Circle();
+    arr[2] = new Point();
+    arr[3] = new Rhombus();
+    arr[4] = new Rectangle();
+    arr[5] = new Line();
+    arr[6] = new Ellipse();
 
     while (window.isOpen()) {
         Event event;
@@ -341,20 +348,15 @@ int main() {
             }
         }
         window.clear();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             if (mode == 1) {
-            sto[i].forwardMove();
-            sto[i].drawPolygon(&window);
-            //
-            //arr[i].forwardMove();
-            //arr[i].drawPolygon(&window);
+            arr[i]->forwardMove();
+            arr[i]->drawPolygon(&window);
             }
             else {
-                sto[i].rotateMove();
-                //arr[i].rotateMove();
+                arr[i]->rotateMove();
             }
-            sto[i].drawPolygon(&window);
-            //arr[i].drawPolygon(&window);
+            arr[i]->drawPolygon(&window);
         }
         sleep(seconds(0.05));
         window.display();
