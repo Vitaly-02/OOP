@@ -41,7 +41,7 @@ public:
         angles = 30;
         rotate = 0;
     }
-    void drawPolygon(RenderWindow* window) {
+    /*virtual*/ void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setOrigin(radius, radius);
@@ -52,7 +52,7 @@ public:
         // последний 0 == прозрачность
         window->draw(polygon);
     }
-    void forwardMove() {
+    /*virtual*/ void forwardMove() {
         rotate = 0;
         if (x >= width - xSpeed - radius || x <= -xSpeed + radius) {
             xSpeed = -xSpeed;
@@ -109,17 +109,8 @@ public:
         }
     }
     
-    void rotateMove(RenderWindow* window) {
-        //CircleShape polygon(radius, angles);
-        //polygon.setPosition(x, y);
-        //polygon.setOutlineThickness(3);
-        //polygon.setOutlineColor(Color(color[0], color[1], color[2]));
-        //polygon.setFillColor(Color(0, 0, 0, 0));
-        // последний 0 == прозрачность
-        //polygon.setOrigin(radius, radius);
-        //polygon.rotate(i);
+    void rotateMove() {
         rotate++;
-        //window->draw(polygon);
     }
 };
 
@@ -184,7 +175,7 @@ public:
         angles = 30;
         rotate = 0;
     };
-    void drawPolygon(RenderWindow* window) {
+    /*virtual*/ void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setFillColor(Color(color[0], color[1], color[2]));
@@ -237,7 +228,7 @@ public:
         angles = 4;
         rotate = 0;
     };
-    void drawPolygon(RenderWindow* window) {
+    /*virtual*/ void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
         polygon.setOrigin(ox / 2, oy / 2);
@@ -248,7 +239,7 @@ public:
         // последний 0 == прозрачность
         window->draw(polygon);
     }
-    void forwardMove() {
+    /*virtual*/ void forwardMove() {
         rotate = 0;
         if (x >= width - xSpeed - ox/2 || x <= -xSpeed + ox/2) {
             xSpeed = -xSpeed;
@@ -282,7 +273,7 @@ public:
         angles = 4;
         rotate = 0;
     };
-    void drawPolygon(RenderWindow* window) {
+    /*virtual*/ void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
         polygon.setOrigin(ox / 2, oy / 2);
@@ -313,7 +304,7 @@ public:
         angles = 30;
         rotate = 0;
     };
-    void drawPolygon(RenderWindow* window) {
+    /*virtual*/ void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setOrigin(radius, radius);
@@ -334,6 +325,10 @@ int main() {
     Point sto[10]; 
     bool mode = 1;
     
+    //Polygon arr[2];
+    //arr[0] = Circle();
+    //arr[1] = Rectangle();
+
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -350,11 +345,16 @@ int main() {
             if (mode == 1) {
             sto[i].forwardMove();
             sto[i].drawPolygon(&window);
+            //
+            //arr[i].forwardMove();
+            //arr[i].drawPolygon(&window);
             }
             else {
-                sto[i].rotateMove(&window);
+                sto[i].rotateMove();
+                //arr[i].rotateMove();
             }
             sto[i].drawPolygon(&window);
+            //arr[i].drawPolygon(&window);
         }
         sleep(seconds(0.05));
         window.display();
