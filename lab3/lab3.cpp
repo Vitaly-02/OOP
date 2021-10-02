@@ -31,19 +31,17 @@ public:
         rotate = 0;
     };
     //конструктор с несколькими параметрами
-    Polygon(float a, float b, int c=1, int d=1, int arr[]=0, int e=3, int f=30, int g=0) {
+    Polygon(int a, int b, int c, int d) {
         x = a;
         y = b;
         xSpeed = c;
         ySpeed = d;
-        color[0] = arr[0];
-        color[1] = arr[1];
-        color[2] = arr[2];
-        radius = e;
-        angles = f;
-        rotate = g; 
+        color[0] = color[1] = color[2] = 0;
+        radius = 3;
+        angles = 30;
+        rotate = 0;
     }
-    
+
     virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
@@ -54,7 +52,7 @@ public:
         polygon.setFillColor(Color(0, 0, 0, 0));
         // последний 0 == прозрачность
         window->draw(polygon);
-    } 
+    }
     virtual void forwardMove() {
         rotate = 0;
         if (x >= width - xSpeed - radius || x <= -xSpeed + radius) {
@@ -111,7 +109,7 @@ public:
         }
         }
     }
-    
+
     void rotateMove() {
         rotate++;
     }
@@ -136,6 +134,19 @@ public:
         angles = 3;
         rotate = 0;
     };
+    //конструктор с несколькими параметрами
+    Triangle(int a, int b, int c, int d) {
+        x = a;
+        y = b;
+        xSpeed = c;
+        ySpeed = d;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        radius = rand() % 30 + 5;
+        angles = 3;
+        rotate = 0;
+    };
 };
 
 class Circle : public Polygon {
@@ -154,6 +165,19 @@ public:
         for (int i = 0; i < 3; i++) {
             color[i] = rand() % 255;
         }
+        angles = 30;
+        rotate = 0;
+    };
+    //конструктор с несколькими параметрами
+    Circle(int a, int b, int c, int d) {
+        x = a;
+        y = b;
+        xSpeed = c;
+        ySpeed = d;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        radius = rand() % 30 + 5;
         angles = 30;
         rotate = 0;
     };
@@ -178,12 +202,26 @@ public:
         angles = 30;
         rotate = 0;
     };
+    //конструктор с несколькими параметрами
+    Point(int a, int b, int c, int d) {
+        x = a;
+        y = b;
+        xSpeed = c;
+        ySpeed = d;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        radius = 3;
+        angles = 30;
+        rotate = 0;
+    };
     virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
         polygon.setFillColor(Color(color[0], color[1], color[2]));
         window->draw(polygon);
-    }
+    };
+
 };
 // ромб
 class Rhombus : public Polygon {
@@ -205,7 +243,19 @@ public:
         angles = 4;
         rotate = 0;
     };
-
+    //конструктор с несколькими параметрами
+    Rhombus(int a, int b, int c, int d) {
+        x = a;
+        y = b;
+        xSpeed = c;
+        ySpeed = d;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        radius = rand() % 30 + 5;
+        angles = 4;
+        rotate = 0;
+    };
 };
 // прямоугольник
 class Rectangle : public Polygon {
@@ -231,6 +281,20 @@ public:
         angles = 4;
         rotate = 0;
     };
+    //конструктор с несколькими параметрами
+    Rectangle(int a, int b, int c, int d) {
+        ox = a;
+        oy = b;
+        x = c;
+        y = d;
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 4;
+        rotate = 0;
+    };
     virtual void drawPolygon(RenderWindow* window) {
         RectangleShape polygon(Vector2f(ox, oy));
         polygon.setPosition(x, y);
@@ -244,10 +308,10 @@ public:
     }
     virtual void forwardMove() {
         rotate = 0;
-        if (x >= width - xSpeed - ox/2 || x <= -xSpeed + ox/2) {
+        if (x >= width - xSpeed - ox / 2 || x <= -xSpeed + ox / 2) {
             xSpeed = -xSpeed;
         }
-        if (y >= height - ySpeed - oy/2 || y <= -ySpeed + oy/2) {
+        if (y >= height - ySpeed - oy / 2 || y <= -ySpeed + oy / 2) {
             ySpeed = -ySpeed;
         }
         x += xSpeed;
@@ -268,6 +332,20 @@ public:
         while ((y <= oy * 2) || (y >= height - oy * 2)) {
             y = rand() % height;
         }
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 4;
+        rotate = 0;
+    };
+    //конструктор с несколькими параметрами
+    Line(int a, int b, int c) {
+        ox = a;
+        oy = 3;
+        x = b;
+        y = c;
         xSpeed = rand() % 3 + 1;
         ySpeed = rand() % 3 + 1;
         for (int i = 0; i < 3; i++) {
@@ -307,6 +385,20 @@ public:
         angles = 30;
         rotate = 0;
     };
+    //конструктор с несколькими параметрами
+    Ellipse(int a, int b, int c, int d) {
+        ox = a;
+        oy = b;
+        x = c;
+        y = d;
+        xSpeed = rand() % 3 + 1;
+        ySpeed = rand() % 3 + 1;
+        for (int i = 0; i < 3; i++) {
+            color[i] = rand() % 255;
+        }
+        angles = 30;
+        rotate = 0;
+    };
     virtual void drawPolygon(RenderWindow* window) {
         CircleShape polygon(radius, angles);
         polygon.setPosition(x, y);
@@ -324,8 +416,17 @@ public:
 int main() {
     srand(time(0));
     RenderWindow window(VideoMode(width, height), "okno");
- 
+
     bool mode = 1;
+    /*
+    Triangle one[3];
+    Circle two[3];
+    Point three[3];
+    Rhombus four[3];
+    Rectangle five[3];
+    Line six[3];
+    Ellipse seven[3];
+    */
     
     Polygon* arr[7];
     arr[0] = new Triangle();
@@ -335,7 +436,7 @@ int main() {
     arr[4] = new Rectangle();
     arr[5] = new Line();
     arr[6] = new Ellipse();
-
+    
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -350,8 +451,8 @@ int main() {
         window.clear();
         for (int i = 0; i < 7; i++) {
             if (mode == 1) {
-            arr[i]->forwardMove();
-            arr[i]->drawPolygon(&window);
+                arr[i]->forwardMove();
+                arr[i]->drawPolygon(&window);
             }
             else {
                 arr[i]->rotateMove();
