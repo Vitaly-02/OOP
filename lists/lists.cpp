@@ -4,23 +4,18 @@
 
 using namespace std;
 
-struct node {
-	node* next;
-	int data;
-
-	node(int datA) : data(datA), next(nullptr) {}
-};
-
-
 class list {
 protected:
 	list* head;
-	//list* tail;
 	list* next;
 	int data;
 
 public:
 	list(int datA) : data(datA), next(nullptr), head(this) {}
+
+	void set_next(list* ptr) {
+		this->next = ptr;
+	};
 
 	bool is_empty() {
 		return (head == nullptr);
@@ -127,20 +122,21 @@ class queue : public list {
 private:
 	list* tail;
 public:
-	queue() : list(-1), tail(nullptr) {}
-	queue(int datA) : list(datA), tail(nullptr) {}
+	queue() : list(-1), tail(this) {}
+	queue(int datA) : list(datA), tail(this) {}
 
 	void pushback(int D) {
 		queue* q;
-		//queue q;
 		q = new queue(D);
 		if (head == nullptr) {
 			head = q;
 			tail = q;
 		}
 		else {
-			//todo tail->next = q;
-			tail->next = q;
+			//next line is shit
+			//tail->next = q;
+			//next line is masterpiece
+			tail->set_next(q);
 			tail = q;
 		}
 	};
@@ -167,7 +163,7 @@ public:
 
 
 int main() {
-    std::cout << "Hello World!\n";
+    cout << "queue goes first and stack goes second\n";
 	queue a(199);
 	a.fill_dec(10);
 	a.print();
@@ -175,6 +171,5 @@ int main() {
 	stack o(199);
 	o.fill_dec(10);
 	o.print();
-	cout << endl << sizeof(o);
-	
+	cout << sizeof(o);	
 }
