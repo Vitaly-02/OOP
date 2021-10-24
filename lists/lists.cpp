@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/*
+* TO DO:
+* конструктор без параметров
+* явно использовать указатель this
+*/
+
+#include <iostream>
 #include <time.h>
 #include <cstdlib>
 
@@ -53,11 +59,11 @@ public:
 	};
 
 	void pop_top() {
-		list* q = head;
-		head = q->next;
-		q->data = NULL;
+		list* q = this->head;
+		this->head = q->next;
+		q->data = 0;
 		q->next = nullptr;
-		delete q;
+		//delete q;
 	}
 
 	void pop_all() {
@@ -84,6 +90,7 @@ class stack : public list {
 
 public:
 	stack(int datA) : list(datA) {}
+	stack() : list(-1) {}
 
 	void pushtop(int D) {
 		stack* q;
@@ -133,9 +140,6 @@ public:
 			tail = q;
 		}
 		else {
-			//next line is shit
-			//tail->next = q;
-			//next line is masterpiece
 			tail->set_next(q);
 			tail = q;
 		}
@@ -163,13 +167,76 @@ public:
 
 
 int main() {
-    cout << "queue goes first and stack goes second\n";
+	queue b(1);
+	stack c(1);
+	int x;
+	int y;
+	while (true) {
+		x = rand() % 4;
+		switch (x) {
+		case 0: {
+			cout << "\nAdd rand\n";
+			b.pushback(rand() % 1000);
+			break;
+		}
+		case 1: {
+			if (!b.is_empty()) {
+				cout << "\nPop top\n";
+				b.pop_top();
+			}
+			else {
+				cout << "\nNothing\n";
+			}
+			break;
+		}
+		default: {
+			cout << "\nNothing\n";
+			break;
+		}
+		}
+		cout << "Queue: ";
+		b.print();
+		y = rand() % 4;
+		switch (y) {
+		case 0: {
+			cout << "\nAdd rand\n";
+			c.pushtop(rand() % 1000);
+			break;
+		}
+		case 1: {
+			if (!b.is_empty()) {
+				cout << "\nPop top\n";
+				c.pop_top();
+			}
+			else {
+				cout << "\nNothing\n";
+			}
+			break;
+		}
+		default: {
+			cout << "\nNothing\n";
+			break;
+		}
+		}
+		cout << "Stack: ";
+		c.print();
+
+		system("sleep 1.5");
+		system("clear");
+	}
+
+	/*
+	cout << "queue goes first and stack goes second\n";
 	queue a(199);
 	a.fill_dec(10);
+	a.pop_top();
 	a.print();
-	cout << sizeof(a) << endl;
 	stack o(199);
 	o.fill_dec(10);
+	o.pop_top();
 	o.print();
-	cout << sizeof(o);	
+	//system("clear");
+	*/
+	return 0;
 }
+
